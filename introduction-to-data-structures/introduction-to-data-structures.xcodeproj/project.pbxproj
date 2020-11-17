@@ -1,0 +1,83 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXFileReference section */
+		3A662F9A256410FE00F37DCF /* ArrayList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArrayList.h; sourceTree = "<group>"; };
+		3A662F9B256410FE00F37DCF /* ArrayList.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ArrayList.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		3A662F922564065300F37DCF = {
+			isa = PBXGroup;
+			children = (
+				3A662F99256406A400F37DCF /* linked-list */,
+			);
+			sourceTree = "<group>";
+		};
+		3A662F99256406A400F37DCF /* linked-list */ = {
+			isa = PBXGroup;
+			children = (
+				3A662F9A256410FE00F37DCF /* ArrayList.h */,
+				3A662F9B256410FE00F37DCF /* ArrayList.c */,
+			);
+			path = "linked-list";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		3A662F932564065300F37DCF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1220;
+			};
+			buildConfigurationList = 3A662F962564065300F37DCF /* Build configuration list for PBXProject "introduction-to-data-structures" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3A662F922564065300F37DCF;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		3A662F972564065300F37DCF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		3A662F982564065300F37DCF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3A662F962564065300F37DCF /* Build configuration list for PBXProject "introduction-to-data-structures" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A662F972564065300F37DCF /* Debug */,
+				3A662F982564065300F37DCF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3A662F932564065300F37DCF /* Project object */;
+}

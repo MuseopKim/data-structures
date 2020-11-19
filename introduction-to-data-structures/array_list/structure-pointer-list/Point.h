@@ -19,4 +19,4 @@ void showPointPosition(Point * point);
 
 int comparePoint(Point * firstPoint, Point * secondPoint);
 
-#endif
+#endif /* Point_h */

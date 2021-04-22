@@ -1,4 +1,4 @@
-package search.sequential;
+package Search.sequential;
 
 import java.util.Scanner;
 

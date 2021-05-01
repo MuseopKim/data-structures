@@ -8,7 +8,7 @@ public class Heap {
     private HeapElement[] heapArray;
     private Comparator<HeapElement> comparator;
 
-    static class HeapElement {
+    public static class HeapElement {
         private int data;
 
         public HeapElement(int data) {

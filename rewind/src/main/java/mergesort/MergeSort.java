@@ -39,16 +39,16 @@ public class MergeSort {
             tempArrayIndex += 1;
         }
 
-        if (leftAreaIndex > middleIndex) {
-            for (int i = rightAreaIndex; i <= rightIndex; i++) {
-                tempArray[tempArrayIndex] = array[i];
-                tempArrayIndex += 1;
-            }
-        } else if (rightAreaIndex > rightIndex) {
-            for (int i = leftAreaIndex; i <= middleIndex; i++) {
-                tempArray[tempArrayIndex] = array[i];
-                tempArrayIndex += 1;
-            }
+        while (leftAreaIndex <= middleIndex) {
+            tempArray[tempArrayIndex] = array[leftAreaIndex];
+            leftAreaIndex += 1;
+            tempArrayIndex += 1;
+        }
+
+        while (rightAreaIndex <= rightIndex) {
+            tempArray[tempArrayIndex] = array[rightAreaIndex];
+            rightAreaIndex += 1;
+            tempArrayIndex += 1;
         }
 
         for (int i = leftIndex; i <= rightIndex; i++) {

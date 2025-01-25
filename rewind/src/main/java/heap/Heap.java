@@ -5,7 +5,7 @@ import java.util.Comparator;
 public class Heap<T> {
 
     private BinaryTree<T> root;
-    private BinaryTree<T> lastInserted;
+    private BinaryTree<T> lastInsertedNode;
     private Comparator<T> comparator;
 
     public Heap(Comparator<T> comparator) {
@@ -13,9 +13,9 @@ public class Heap<T> {
     }
 
     public void insert(T data) {
-        if (this.lastInserted == null) {
-            this.lastInserted = new BinaryTree<>(data);
-            this.root = this.lastInserted;
+        if (this.lastInsertedNode == null) {
+            this.lastInsertedNode = new BinaryTree<>(data);
+            this.root = this.lastInsertedNode;
             return;
         }
 
@@ -29,7 +29,7 @@ public class Heap<T> {
         }
 
         newNode.setParent(insertingParent);
-        this.lastInserted = newNode;
+        this.lastInsertedNode = newNode;
 
         while (newNode.getParent() != null) {
             BinaryTree<T> parent = newNode.getParent();
@@ -48,21 +48,21 @@ public class Heap<T> {
         /**
          * 마지막으로 삽입된 노드가 루트노드인 경우
          */
-        if (this.lastInserted.getParent() == null) {
-            return this.lastInserted;
+        if (this.lastInsertedNode.getParent() == null) {
+            return this.lastInsertedNode;
         }
 
         /**
          * lastInserted가 부모노드의 왼쪽 자식노드인 경우
          */
-        if (this.lastInserted == this.lastInserted.getParent().getLeftSubTree()) {
-            return this.lastInserted.getParent();
+        if (this.lastInsertedNode == this.lastInsertedNode.getParent().getLeftSubTree()) {
+            return this.lastInsertedNode.getParent();
         }
 
         /**
          * 마지막으로 삽입된 노드가 부모노드의 오른쪽 자식노드인 경우
          */
-        BinaryTree<T> current = this.lastInserted;
+        BinaryTree<T> current = this.lastInsertedNode;
         BinaryTree<T> firstRightSibling = null;
 
         // 루트노드 이전까지 반복
@@ -121,27 +121,27 @@ public class Heap<T> {
     public BinaryTree<T> remove() {
         BinaryTree<T> deletedNode = null;
         // 마지막 노드가 루트노드인 경우
-        if (this.lastInserted == this.root) {
+        if (this.lastInsertedNode == this.root) {
             deletedNode = this.root;
             this.root = null;
-            this.lastInserted = null;
+            this.lastInsertedNode = null;
             return deletedNode;
         }
 
         BinaryTree<T> prevLastInsertedNode = this.getNewLastInsertedNode();
         T parentData = this.root.getData();
-        this.root.setData(this.lastInserted.getData());
-        this.lastInserted.setData(parentData);
+        this.root.setData(this.lastInsertedNode.getData());
+        this.lastInsertedNode.setData(parentData);
 
-        if (this.lastInserted.getParent().getLeftSubTree() == this.lastInserted) {
-            this.lastInserted.getParent().setLeftSubTree(null);
+        if (this.lastInsertedNode.getParent().getLeftSubTree() == this.lastInsertedNode) {
+            this.lastInsertedNode.getParent().setLeftSubTree(null);
         } else {
-            this.lastInserted.getParent().setRightSubTree(null);
+            this.lastInsertedNode.getParent().setRightSubTree(null);
         }
 
-        this.lastInserted.setParent(null);
-        deletedNode = this.lastInserted;
-        this.lastInserted = prevLastInsertedNode;
+        this.lastInsertedNode.setParent(null);
+        deletedNode = this.lastInsertedNode;
+        this.lastInsertedNode = prevLastInsertedNode;
 
         BinaryTree<T> current = this.root;
         do {
@@ -169,8 +169,8 @@ public class Heap<T> {
         /**
          * 마지막에 삽입된 노드가 부모노드의 왼쪽 자식노드인 경우
          */
-        if (this.lastInserted == this.lastInserted.getParent().getLeftSubTree()) {
-            BinaryTree<T> current = this.lastInserted;
+        if (this.lastInsertedNode == this.lastInsertedNode.getParent().getLeftSubTree()) {
+            BinaryTree<T> current = this.lastInsertedNode;
             BinaryTree<T> firstLeftSibling = null;
 
             while (current.getParent().getParent() != null) {
@@ -207,7 +207,7 @@ public class Heap<T> {
         /**
          * 마지막에 삽입된 노드가 부모노드의 오른쪽 자식노드인 경우
          */
-        prevLastInsertedNode = lastInserted.getParent().getLeftSubTree();
+        prevLastInsertedNode = lastInsertedNode.getParent().getLeftSubTree();
         return prevLastInsertedNode;
     }
 

@@ -4,54 +4,65 @@ import binarytree.BinaryTree;
 
 public class BinarySearchTree {
 
-    private BinaryTree rootNode;
+    private BinaryTree root;
 
     public void insert(int data) {
-        if (rootNode == null) {
-            this.rootNode = new BinaryTree(data);
+        if (this.root == null) {
+            this.root = new BinaryTree(data);
             return;
         }
 
-        BinaryTree currentNode = rootNode;
-        BinaryTree parentNode = currentNode;
+        BinaryTree currentNode = this.root;
+        BinaryTree parentNode = null;
+
         while (currentNode != null) {
             parentNode = currentNode;
-            if (currentNode.getData() == data) {
-                return;
-            }
-
-            if (currentNode.getData() < data) {
-                currentNode = currentNode.getRightSubTree();
-                continue;
-            }
 
             if (currentNode.getData() > data) {
                 currentNode = currentNode.getLeftSubTree();
+            } else if (currentNode.getData() < data) {
+                currentNode = currentNode.getRightSubTree();
+            } else {
+                return;
             }
         }
 
         BinaryTree newNode = new BinaryTree(data);
-        if (parentNode.getData() > data) {
-            parentNode.setLeftSubTree(newNode);
-        }
 
-        if (parentNode.getData() < data) {
+        if (parentNode.getData() > newNode.getData()) {
+            parentNode.setLeftSubTree(newNode);
+        } else {
             parentNode.setRightSubTree(newNode);
         }
     }
 
-    public BinaryTree remove(int target) {
-        // 부모노드를 갖지 않는 루트노드를 제거할 때 사용
-        BinaryTree fakeParentRootNode = new BinaryTree(-1);
-        fakeParentRootNode.setRightSubTree(rootNode);
+    public BinaryTree search(int targetData) {
+        BinaryTree currentNode = this.root;
+
+        while (currentNode != null) {
+            if (currentNode.getData() == targetData) {
+                return currentNode;
+            } else if (currentNode.getData() > targetData) {
+                currentNode = currentNode.getLeftSubTree();
+            } else {
+                currentNode = currentNode.getRightSubTree();
+            }
+        }
+
+        return null;
+    }
+
+    public BinaryTree remove(int targetData) {
+        BinaryTree fakeParentRootNode = new BinaryTree(0);
         BinaryTree parentNode = fakeParentRootNode;
+        BinaryTree currentNode = this.root;
+        BinaryTree deletingNode = null;
 
-        BinaryTree currentNode = rootNode;
-        BinaryTree targetNode = null;
-        while (currentNode != null && currentNode.getData() != target) {
+        fakeParentRootNode.setRightSubTree(this.root);
+
+        while (currentNode != null && currentNode.getData() != targetData) {
             parentNode = currentNode;
-
-            if (currentNode.getData() > target) {
+            if (currentNode.getData() > targetData) {
                 currentNode = currentNode.getLeftSubTree();
             } else {
                 currentNode = currentNode.getRightSubTree();
@@ -62,89 +73,78 @@ public class BinarySearchTree {
             return null;
         }
 
-        targetNode = currentNode;
-        // 자식 노드가 하나도 없는 경우
-        if (targetNode.getLeftSubTree() == null && targetNode.getRightSubTree() == null) {
-            if (parentNode.getLeftSubTree() == targetNode) {
+        deletingNode = currentNode;
+
+        /**
+         * 터미널 노드 제거
+         */
+        if (deletingNode.getLeftSubTree() == null && deletingNode.getRightSubTree() == null) {
+            if (parentNode.getLeftSubTree() == deletingNode) {
                 parentNode.removeLeftSubTree();
-            }
-            if (parentNode.getRightSubTree() == targetNode) {
+            } else {
                 parentNode.removeRightSubTree();
             }
-        }
-        // 자식 노드가 1개인 경우
-        if (targetNode.getLeftSubTree() == null || targetNode.getRightSubTree() == null) {
-            BinaryTree targetNodeChild = null;
 
-            if (targetNode.getLeftSubTree() != null) {
-                targetNodeChild = targetNode.getLeftSubTree();
-            }
-            if (targetNode.getRightSubTree() != null) {
-                targetNodeChild = targetNode.getRightSubTree();
-            }
-
-            if (parentNode.getLeftSubTree() == targetNode) {
-                parentNode.setLeftSubTree(targetNodeChild);
-            }
-            if (parentNode.getRightSubTree() == targetNode) {
-                parentNode.setRightSubTree(targetNodeChild);
-            }
-            // 자식 노드가 2개인 경우
-        }
-        if (targetNode.getLeftSubTree() != null && targetNode.getRightSubTree() != null) {
-            // 왼쪽 자식노드에서 가장 큰 값 or 오른쪽 자식노드중 가장 작은 값으로 대체한다.
-            BinaryTree replacement = targetNode.getLeftSubTree();
-            BinaryTree replacementParent = targetNode;
-
-            while (replacement.getRightSubTree() != null) {
-                replacementParent = replacement;
-                replacement = replacement.getRightSubTree();
-            }
-
-            int targetData = targetNode.getData();
-            targetNode.setData(replacement.getData());
-
-            if (replacementParent.getLeftSubTree() == replacement) {
-                replacementParent.setLeftSubTree(replacement.getLeftSubTree());
-            }
-
-            if (replacementParent.getRightSubTree() == replacement) {
-                replacementParent.setRightSubTree(replacement.getLeftSubTree());
-            }
-
-            targetNode = replacement;
-            targetNode.setData(targetData);
+            return deletingNode;
         }
 
-        if (fakeParentRootNode.getRightSubTree() != rootNode) {
-            rootNode = fakeParentRootNode.getRightSubTree();
+        /**
+         * 자식 노드를 1개 가지는 경우
+         */
+        if (deletingNode.getLeftSubTree() == null || deletingNode.getRightSubTree() == null) {
+            BinaryTree deletingChildNode = null;
+
+            if (deletingNode.getLeftSubTree() != null) {
+                deletingChildNode = deletingNode.getLeftSubTree();
+            } else {
+                deletingChildNode = deletingNode.getRightSubTree();
+            }
+
+            if (parentNode.getLeftSubTree() == deletingNode) {
+                parentNode.setLeftSubTree(deletingChildNode);
+            } else {
+                parentNode.setRightSubTree(deletingChildNode);
+            }
+
+            return deletingNode;
         }
 
-        return targetNode;
+        /**
+         * 자식 노드가 2개 있는 경우
+         */
+        if (deletingNode.getRightSubTree() != null && deletingNode.getRightSubTree() != null) {
+            BinaryTree replacingNode = deletingNode.getLeftSubTree();
+            BinaryTree replacingNodeParent = deletingNode;
+
+            while (replacingNode.getRightSubTree() != null) {
+                replacingNodeParent = replacingNode;
+                replacingNode = replacingNode.getRightSubTree();
+            }
+
+            int deletingNodeData = deletingNode.getData();
+            deletingNode.setData(replacingNode.getData());
+
+            if (replacingNodeParent.getLeftSubTree() == replacingNode) {
+                replacingNodeParent.setLeftSubTree(replacingNode.getLeftSubTree());
+            } else {
+                replacingNodeParent.setRightSubTree(replacingNode.getLeftSubTree());
+            }
+
+            deletingNode = replacingNode;
+            deletingNode.setData(deletingNodeData);
+        }
+
+        /**
+         * 루트노드가 변경 된 경우
+         */
+        if (fakeParentRootNode.getRightSubTree() != this.root) {
+            this.root = fakeParentRootNode.getRightSubTree();
+        }
+
+        return deletingNode;
     }
 
-    public BinaryTree search(int target) {
-        BinaryTree currentNode = rootNode;
-
-        while (currentNode != null) {
-            if (currentNode.getData() == target) {
-                return currentNode;
-            }
-
-            if (currentNode.getData() > target) {
-                currentNode = currentNode.getLeftSubTree();
-                continue;
-            }
-
-            if (currentNode.getData() < target) {
-                currentNode = currentNode = currentNode.getRightSubTree();
-            }
-        }
-
-        return null;
-    }
-
-    public BinaryTree getRootNode() {
-        return this.rootNode;
+    public BinaryTree getRoot() {
+        return root;
     }
 }
